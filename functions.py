@@ -50,134 +50,134 @@ def calc_distance(pos1, pos2):
     return int(distance)
 
 
-def summary(self, player):
+def summary(mob, player):
     print("VARIABLES", end='\n')
-    print(f"start_distance = {calc_distance(self.position, player.position)}")
-    print(f"mob_lvl = {self.lvl}")
+    print(f"start_distance = {calc_distance(mob.position, player.position)}")
+    print(f"mob_lvl = {mob.lvl}")
     print(f"player_lvl = {player.lvl}")
-    print(f"current_state: {self.current_state}")
-    print(f"clock {self.clock.current_time}")
+    print(f"current_state: {mob.current_state}")
+    print(f"clock {mob.clock.current_time}")
 
 
-def idle_transitions(self, player):
-    self.current_state = "IDLE"
-    self.summary(player)
-    if self.player_in_range(player.position):
-        return self.player_approach_transitions(player)
-    if self.clock.current_time - self.start_idle_time < 60:
+def idle_transitions(mob, player):
+    mob.current_state = "IDLE"
+    mob.summary(player)
+    if mob.player_in_range(player.position):
+        return mob.player_approach_transitions(player)
+    if mob.clock.current_time - mob.start_idle_time < 60:
         return "IDLE"
     else:
-        return self.walk_transitions(player)
+        return mob.walk_transitions(player)
 
 
-def player_in_range(self, player_pos):
-    if calc_distance(self.position, player_pos) < 15:
+def player_in_range(mob, player_pos):
+    if calc_distance(mob.position, player_pos) < 15:
         return True
     else:
         return False
 
 
-def combat_transitions(self, player):
-    self.current_state = "COMBAT"
-    self.summary(player)
-    if self.lvl > player.lvl:
-        self.victory_time = self.clock.current_time
+def combat_transitions(mob, player):
+    mob.current_state = "COMBAT"
+    mob.summary(player)
+    if mob.lvl > player.lvl:
+        mob.victory_time = mob.clock.current_time
         print("player got killed")
-        player.respawn(self)
-        return self.victory_transitions(player)
+        player.respawn(mob)
+        return mob.victory_transitions(player)
     else:
-        self.hp = 0
-        return self.defeat_transitions(player)
+        mob.hp = 0
+        return mob.defeat_transitions(player)
 
 
-def walk_transitions(self, player):
-    self.current_state = "WALK"
-    self.summary(player)
-    if calc_distance(self.position, player.position) <= 15:
-        return self.player_approach_transitions(player)
+def walk_transitions(mob, player):
+    mob.current_state = "WALK"
+    mob.summary(player)
+    if calc_distance(mob.position, player.position) <= 15:
+        return mob.player_approach_transitions(player)
     else:
         return "WALK"
 
 
-def respawn_transitions(self, player):
-    self.current_state = "RESPAWN"
-    self.summary(player)
-    self.hp = 100
-    self.position = [0, 0]
-    return self.idle_transitions(player)
+def respawn_transitions(mob, player):
+    mob.current_state = "RESPAWN"
+    mob.summary(player)
+    mob.hp = 100
+    mob.position = [0, 0]
+    return mob.idle_transitions(player)
 
 
-def defeat_transitions(self, player):
-    self.current_state = "DEFEAT"
-    self.summary(player)
-    return self.respawn_transitions(player)
+def defeat_transitions(mob, player):
+    mob.current_state = "DEFEAT"
+    mob.summary(player)
+    return mob.respawn_transitions(player)
 
 
-def regen_transitions(self, player):
-    self.current_state = "REGEN"
-    self.summary(player)
-    return self.bot_transitions(player)
+def regen_transitions(mob, player):
+    mob.current_state = "REGEN"
+    mob.summary(player)
+    return mob.bot_transitions(player)
 
 
-def victory_transitions(self, player):
-    self.current_state = "VICTORY"
-    self.summary(player)
-    if self.clock.current_time - self.victory_time >= 3:
-        return self.regen_transitions(player)
+def victory_transitions(mob, player):
+    mob.current_state = "VICTORY"
+    mob.summary(player)
+    if mob.clock.current_time - mob.victory_time >= 3:
+        return mob.regen_transitions(player)
     else:
         return "VICTORY"
 
 
-def aggro_transitions(self, player):
-    self.current_state = "AGGRO"
-    self.summary(player)
-    if calc_distance(self.position, player.position) <= 2:
-        return self.combat_transitions(player)
+def aggro_transitions(mob, player):
+    mob.current_state = "AGGRO"
+    mob.summary(player)
+    if calc_distance(mob.position, player.position) <= 2:
+        return mob.combat_transitions(player)
     else:
-        self.move_towards_player(player)
+        mob.move_towards_player(player)
         return "AGGRO"
 
 
-def eval_transitions(self, player):
-    self.current_state = "EVAL"
-    self.summary(player)
-    if self.lvl > player.lvl:
-        return self.aggro_transitions(player)
+def eval_transitions(mob, player):
+    mob.current_state = "EVAL"
+    mob.summary(player)
+    if mob.lvl > player.lvl:
+        return mob.aggro_transitions(player)
     else:
-        return self.bot_transitions(player)
+        return mob.bot_transitions(player)
 
 
-def bot_transitions(self, player):
-    self.current_state = "BOT"
-    self.summary(player)
-    return self.walk_transitions(player)
+def bot_transitions(mob, player):
+    mob.current_state = "BOT"
+    mob.summary(player)
+    return mob.walk_transitions(player)
 
 
-def player_approach_transitions(self, player):
-    self.current_state = "PLAYER_APPROACH"
-    self.summary(player)
-    distance = calc_distance(self.position, player.position)
+def player_approach_transitions(mob, player):
+    mob.current_state = "PLAYER_APPROACH"
+    mob.summary(player)
+    distance = calc_distance(mob.position, player.position)
     if distance > 15:
-        return self.bot_transitions(player)
+        return mob.bot_transitions(player)
     elif distance <= 5:
-        return self.eval_transitions(player)
+        return mob.eval_transitions(player)
     else:
-        self.move_towards_player(player)
+        mob.move_towards_player(player)
 
-    new_distance = calc_distance(self.position, player.position)
+    new_distance = calc_distance(mob.position, player.position)
     if new_distance <= 5:
-        return self.eval_transitions(player)
+        return mob.eval_transitions(player)
     else:
         return "PLAYER_APPROACH"
 
 
-def move_towards_player(self, player):
+def move_towards_player(mob, player):
     distance = calc_distance(mob.position, player.position)
-    dx, dy = (player.position[0] - self.position[0], player.position[1] - self.position[1])
+    dx, dy = (player.position[0] - mob.position[0], player.position[1] - mob.position[1])
     # unit vector van de directional vector
     udx, udy = (dx / distance, dy / distance)
-    self.position[0] = self.position[0] + 0.9 * udx
-    self.position[1] = self.position[1] + 0.9 * udy
+    mob.position[0] = mob.position[0] + 0.9 * udx
+    mob.position[1] = mob.position[1] + 0.9 * udy
 
 
 def simulate(mob, player):
