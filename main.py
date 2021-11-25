@@ -41,7 +41,7 @@ class Player:
         move = 0
         if move == 0:
             # 1 stap van een speler is 1 meter, dus 1 meter richting mob
-            time.sleep(3)
+            time.sleep(1)
             dx, dy = (mob.position[0] - self.position[0], mob.position[1] - self.position[1])
             # unit vector van de directional vector
             udx, udy = (dx / distance, dy / distance)
@@ -60,6 +60,14 @@ class Player:
 
 
 class MobStateMachine:
+    def summary(self, player):
+        print("VARIABLES", end='\n')
+        print(f"start_distance = {functions.calc_distance(self.position, player.position)}")
+        print(f"mob_lvl = {self.lvl}")
+        print(f"player_lvl = {player.lvl}")
+        print(f"current_state: {self.current_state}")
+        print(f"clock {self.clock.current_time}")
+
     def __init__(self, hp, lvl):
         self.clock = Clock()
         self.clock.run()
