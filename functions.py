@@ -2,14 +2,13 @@
 -------------------------------------------------[GENERAL FLOW]---------------------------------------------------------
 
 1. mob is in IDLE state / mob is in w_route (walking route) state
-2. system recognizes player within 15m LoS distance
+2. system recognizes player within 15m LoS range
 3. mob approaches player
-4. mob enters 5m i_range (interactive range) for evaluation
+4. mob enters 5m eval_range for evaluation
 5. system evaluates player level in correspondence to mob level
 6. system establishes mob lvl >= player lvl
 7. mob approaches player to initiate combat
-8. OPTION 1: player out of reach for 8 seconds, enter Regen state
-   OPTION 2: player in 3m combative reach (cmb_reach), enter Combat state
+8. player in 3m ccmb_reach (combative reach), enter Combat state
 9. mob attacks player, vice versa
 10. OPTION 1: mob hp down to 0, enter Defeat state
     OPTION 2: player hp down to 0, enter Victory state
