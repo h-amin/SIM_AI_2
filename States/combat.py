@@ -55,3 +55,4 @@ DPS = random.randrange(11)
 class Combat(object):
     def __init__(self, env, ):
         while True:
+            pass
