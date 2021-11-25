@@ -62,8 +62,8 @@ class Player:
 
 # Mob is the FSM we wanted to simulate in this project. the mob has an clock, which keeps track of the time the moment
 # when the mob is instantiated. The time is necessary to get out of the Idle, Victory and Defeat state.
-# The start state of the FSM is the Idle state, there is no end state. The simulation will end after 100 seconds
-# (in clock time of the mob, not real world)
+# The start state of the FSM is the Idle state, there is no end state. The simulation will end in 100 seconds
+# (in clock time of the mob, not real world) after the player has a higher lvl then the mob
 
 
 class MobStateMachine:
@@ -102,6 +102,6 @@ class MobStateMachine:
 
 
 mob = MobStateMachine(hp=100, lvl=100)
-player = Player(lvl=99)
+player = Player(lvl=random.randint(70, 90))
 functions.simulate(mob, player)
 
