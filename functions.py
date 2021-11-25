@@ -41,6 +41,15 @@ If the combat state takes longer than 600 seconds, the Victory state will be ent
 The damage of mob and player is a random integer between 0 and 11.
 """
 
+import math
+
+def calc_distance(pos1, pos2):
+    dx = (pos1[0] - pos2[0]) ** 2
+    dy = (pos1[1] - pos2[1]) ** 2
+    distance = math.sqrt(dx + dy)
+    return int(distance)
+
+
 def summary(self, player):
     print("VARIABLES", end='\n')
     print(f"start_distance = {calc_distance(self.position, player.position)}")
@@ -171,10 +180,9 @@ def move_towards_player(self, player):
     self.position[1] = self.position[1] + 0.9 * udy
 
 
-def simulate(self):
-    state_transition = self.states_transitions[self.current_state]
-    player = Player(lvl=80)
+def simulate(mob, player):
+    state_transition = mob.states_transitions[mob.current_state]
     while True:
-        player.turn(mob=self)
-        self.current_state = state_transition(player)
-        state_transition = self.states_transitions[self.current_state]
+        player.turn(mob)
+        mob.current_state = state_transition(mob, player)
+        state_transition = mob.states_transitions[mob.current_state]

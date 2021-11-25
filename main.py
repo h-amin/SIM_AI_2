@@ -13,13 +13,6 @@ P_HP = 100
 DPS = random.randrange(11)
 
 
-def calc_distance(pos1, pos2):
-    dx = (pos1[0] - pos2[0]) ** 2
-    dy = (pos1[1] - pos2[1]) ** 2
-    distance = math.sqrt(dx + dy)
-    return int(distance)
-
-
 class Clock:
     def __init__(self):
         self.current_time = 0
@@ -41,7 +34,7 @@ class Player:
         self.position = [15, 15]
 
     def turn(self, mob):
-        distance = calc_distance(self.position, mob.position)
+        distance = functions.calc_distance(self.position, mob.position)
         print(f"\nPlayer position {self.position}, mob position {mob.position}, "
               f"distance: {distance}")
         # move = int(input("type 0 to move towards mob, type 1 to stay idle, type 2 to run:\n"))
@@ -94,4 +87,5 @@ class MobStateMachine:
 
 
 mob = MobStateMachine(hp=100, lvl=100)
-functions.simulate()
+player = Player(lvl=80)
+functions.simulate(mob, player)
