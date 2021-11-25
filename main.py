@@ -4,14 +4,6 @@ import threading
 import time
 import functions
 
-MAX_DISTANCE = 30
-I_RANGE = 5
-CMB_TIME = 600
-CMB_REACH = 3
-M_HP = 100
-P_HP = 100
-DPS = random.randrange(11)
-
 
 class Clock:
     def __init__(self):
@@ -35,13 +27,13 @@ class Player:
 
     def turn(self, mob):
         distance = functions.calc_distance(self.position, mob.position)
-        print(f"\nPlayer position {self.position}, mob position {mob.position}, "
-              f"distance: {distance}")
+        print(f"\nPlayer position: {int(self.position[0])} X, {int(self.position[1])} Y coordinates, mob position: {int(mob.position[0])} X, {int(mob.position[1])} Y."
+              f"distance: {distance} meters")
         # move = int(input("type 0 to move towards mob, type 1 to stay idle, type 2 to run:\n"))
         move = 0
         if move == 0:
             # 1 stap van een speler is 1 meter, dus 1 meter richting mob
-            time.sleep(1)
+            time.sleep(4)
             dx, dy = (mob.position[0] - self.position[0], mob.position[1] - self.position[1])
             # unit vector van de directional vector
             udx, udy = (dx / distance, dy / distance)
@@ -61,7 +53,7 @@ class Player:
 
 class MobStateMachine:
     def summary(self, player):
-        print("VARIABLES", end='\n')
+        # print("VARIABLES", end='\n')
         print(f"start_distance = {functions.calc_distance(self.position, player.position)}")
         print(f"mob_lvl = {self.lvl}")
         print(f"player_lvl = {player.lvl}")
@@ -96,4 +88,8 @@ class MobStateMachine:
 
 mob = MobStateMachine(hp=100, lvl=100)
 player = Player(lvl=80)
+
+f = functions.simulate(mob, player)
+while True:
+    new_f = functions.simulate(mob)
 functions.simulate(mob, player)
