@@ -33,7 +33,7 @@ class Player:
         move = 0
         if move == 0:
             # 1 stap van een speler is 1 meter, dus 1 meter richting mob
-            time.sleep(4)
+            time.sleep(1)
             dx, dy = (mob.position[0] - self.position[0], mob.position[1] - self.position[1])
             # unit vector van de directional vector
             udx, udy = (dx / distance, dy / distance)
@@ -87,9 +87,6 @@ class MobStateMachine:
 
 
 mob = MobStateMachine(hp=100, lvl=100)
-player = Player(lvl=80)
-
-f = functions.simulate(mob, player)
-while True:
-    new_f = functions.simulate(mob)
+player = Player(lvl=99)
 functions.simulate(mob, player)
+

@@ -33,6 +33,7 @@ EVAL_RANGE = 5
 MAX_IDLE = 60
 LOS_RANGE = 15
 THREE_SEC_INTERVAL = 3
+player_list = []
 
 # Function to define the coordinates of said player/mob.
 def calc_distance(pos1, pos2):
@@ -81,7 +82,10 @@ def combat_transitions(mob, player):
 def walk_transitions(mob, player):
     mob.current_state = "WALK"
     mob.summary(player)
-    if calc_distance(mob.position, player.position) <= LOS_RANGE:
+    if player in player_list:
+        mob.position = [mob.position[0]+1,0]
+        return "WALK"
+    elif calc_distance(mob.position, player.position) <= 15:
         return player_approach_transitions(mob, player)
     else:
         return "WALK"
@@ -141,7 +145,8 @@ def eval_transitions(mob, player):
     if mob.lvl > player.lvl:
         return aggro_transitions(mob, player)
     else:
-        return bot_transitions(mob, player)
+        player_list.append(player)
+        return walk_transitions(mob,player)
 
 
 # BoT state function that will transition the current state into the WALK state.
@@ -194,3 +199,6 @@ def simulate(mob, player):
         player.turn(mob)
         mob.current_state = state_transition(mob, player)
         state_transition = mob.states_transitions[mob.current_state]
+        if mob.clock.current_time == 100:
+            print("times up!")
+            break
