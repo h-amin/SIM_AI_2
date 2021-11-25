@@ -13,8 +13,7 @@
 9. mob attacks player, vice versa
 10. OPTION 1: mob hp down to 0, enter Defeat state
     OPTION 2: player hp down to 0, enter Victory state
-    OPTION 3: player out of reach for 8 seconds, enter Victory state
-    OPTION 4: combat state reaches 600 seconds, enter Victory state
+
 
 -----------------------------------------------------[MISC]-------------------------------------------------------------
 
@@ -83,7 +82,8 @@ def walk_transitions(mob, player):
     mob.current_state = "WALK"
     mob.summary(player)
     if player in player_list:
-        mob.position = [mob.position[0]+1,0]
+        # we didnt have time to make a nice walking route, so we decided moves 1 to the right
+        mob.position = [mob.position[0]+1, 0]
         return "WALK"
     elif calc_distance(mob.position, player.position) <= 15:
         return player_approach_transitions(mob, player)
