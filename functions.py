@@ -149,7 +149,7 @@ def eval_transitions(mob, player):
 
 def bot_transitions(mob, player):
     mob.current_state = "BOT"
-    mob.summary(player)
+    summary(mob, player)
     return mob.walk_transitions(player)
 
 
